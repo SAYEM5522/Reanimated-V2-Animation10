@@ -71,7 +71,11 @@ export default function App() {
     return{
       transform:[{
         translateX:withTiming(interpolate(Y.value,[0,1],[-150,0],Extrapolate.CLAMP),{duration:600})
-      }],
+      },
+      {
+        translateY:interpolate(translationY.value,[0,100],[0,-60],Extrapolate.CLAMP)
+      },
+    ],
    
     }
   })
@@ -79,11 +83,30 @@ export default function App() {
     return {
       transform: [
         {
-          translateY:withSpring(-translationY.value)
+          translateY:interpolate(translationY.value,[0,100],[0,-50],Extrapolate.CLAMP)
         },
       ],
     };
   });
+  const ImageTransform = useAnimatedStyle(() => {
+    return {
+      transform: [
+        {
+          translateY:interpolate(translationY.value,[0,100],[0,-50],Extrapolate.CLAMP)
+        },
+        {
+          scale:interpolate(translationY.value,[0,100],[1,0.7],Extrapolate.CLAMP)
+        }
+      ],
+    };
+  });
+  // const GraphTransform = useAnimatedStyle(() => {
+  //   return {
+  //     transform: [
+       
+  //     ],
+  //   };
+  // });
   const points = monotoneCubicInterpolation({data, range: 40});
   return (
     <View style={styles.container}>
@@ -91,9 +114,9 @@ export default function App() {
       <AntDesign name="left" style={styles.BackIcon} size={24} color="black" />
       <View style={styles.Details}>
         <Text style={styles.Tittle}>Choose Your CV</Text>
-        <Image
+        <Animated.Image
         source={{uri:'https://o.remove.bg/downloads/49b8ef79-a540-4b65-abe5-45864cecf72b/istockphoto-1200677760-170667a-removebg-preview.png'}}
-        style={styles.Image}
+        style={[styles.Image,ImageTransform]}
         />
       </View>
       <Animated.View style={[styles.Graph,GraphAnimation]}>
