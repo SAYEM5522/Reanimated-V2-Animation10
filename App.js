@@ -1,11 +1,12 @@
 import { StatusBar } from 'expo-status-bar';
 import React, { useEffect } from 'react';
-import { Dimensions, Image, StyleSheet, Text, View } from 'react-native';
+import { Dimensions, Image, ScrollView, StyleSheet, Text, View } from 'react-native';
 import SearchBar from './Component/SearchBar';
 import { AntDesign } from '@expo/vector-icons';
 const {width: SIZE} = Dimensions.get('window');
 import {ChartDot, ChartPath, ChartPathProvider, monotoneCubicInterpolation} from '@rainbow-me/animated-charts';
-import Animated, { Extrapolate, interpolate, useAnimatedStyle, useSharedValue, withSpring, withTiming } from 'react-native-reanimated';
+import Animated, { Extrapolate, interpolate, useAnimatedScrollHandler, useAnimatedStyle, useSharedValue, withSpring, withTiming } from 'react-native-reanimated';
+import { item } from './Component/Data';
 const data = [
   {x: 1453075200, y: 1.47}, {x: 1453161600, y: 1.37},
   {x: 1453258000, y: 1.53}, {x: 1453334400, y: 1.54},
@@ -49,12 +50,20 @@ const styles = StyleSheet.create({
   },
   Graph:{
     position:'absolute',
-    top:SIZE/2
+    top:(SIZE/2)-30
+  },
+  ScrollContainer:{
+    flex:1,
+    backgroundColor:'#eff5f2'
   }
 });
 export default function App() {
   const Y=useSharedValue(0);
-  // const AnimatedChartPath=Animated.createAnimatedComponent(ChartPath);
+  const translationY = useSharedValue(0);
+ 
+  const scrollHandler = useAnimatedScrollHandler((event) => {
+    translationY.value = event.contentOffset.y;
+  });
   useEffect(()=>{
     Y.value=(!Y.value)
   },[])
@@ -62,9 +71,19 @@ export default function App() {
     return{
       transform:[{
         translateX:withTiming(interpolate(Y.value,[0,1],[-150,0],Extrapolate.CLAMP),{duration:600})
-      }]
+      }],
+   
     }
   })
+  const stylez = useAnimatedStyle(() => {
+    return {
+      transform: [
+        {
+          translateY:withSpring(-translationY.value)
+        },
+      ],
+    };
+  });
   const points = monotoneCubicInterpolation({data, range: 40});
   return (
     <View style={styles.container}>
@@ -82,6 +101,26 @@ export default function App() {
       <ChartPath strokeWidth={4} selectedStrokeWidth={4} height={SIZE / 2} selectedOpacity={1} stroke="#dbb144" width={SIZE-100} />
       <ChartDot size={14} style={{ backgroundColor: '#dbb144'}} />
     </ChartPathProvider>
+     </Animated.View>
+     <Animated.View style={[styles.ScrollContainer,stylez]}>
+       <Animated.ScrollView
+        onScroll={scrollHandler}
+        scrollEventThrottle={16}
+        showsVerticalScrollIndicator={false}
+        >
+       
+         {
+           item.map((item,index)=>{
+             return(
+                <View key={index} style={{height:100}}>
+                    <Text>
+                      hello
+                    </Text>
+                </View>
+             )
+           })
+         }
+       </Animated.ScrollView>
      </Animated.View>
       <StatusBar style="auto" />
     </View>
