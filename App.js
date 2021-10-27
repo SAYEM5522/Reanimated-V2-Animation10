@@ -1,13 +1,13 @@
 import { StatusBar } from 'expo-status-bar';
 import React, { useEffect } from 'react';
-import { Dimensions, Image, ScrollView, StyleSheet, Text, View } from 'react-native';
+import { Dimensions, FlatList, Image, ScrollView, StyleSheet, Text, View } from 'react-native';
 import SearchBar from './Component/SearchBar';
 import { AntDesign } from '@expo/vector-icons';
-const {width: SIZE} = Dimensions.get('window');
+const {width: SIZE,height} = Dimensions.get('window');
 import {ChartDot, ChartPath, ChartPathProvider, monotoneCubicInterpolation} from '@rainbow-me/animated-charts';
-import Animated, { Extrapolate, interpolate, useAnimatedScrollHandler, useAnimatedStyle, useSharedValue, withSpring, withTiming } from 'react-native-reanimated';
-import { item } from './Component/Data';
+import Animated, { Extrapolate, interpolate, useAnimatedGestureHandler, useAnimatedScrollHandler, useAnimatedStyle, useSharedValue, withSpring, withTiming } from 'react-native-reanimated';
 import Catagory from './Component/Catagory';
+import { PanGestureHandler } from 'react-native-gesture-handler';
 const data = [
   {x: 1453075200, y: 1.47}, {x: 1453161600, y: 1.37},
   {x: 1453258000, y: 1.53}, {x: 1453334400, y: 1.54},
@@ -56,25 +56,39 @@ const styles = StyleSheet.create({
   ScrollContainer:{
     flex:1,
     backgroundColor:'#eff5f2'
+  },
+  Catagory:{
+    padding:15,
+    backgroundColor: '#eff5f2',
+    height:height
   }
 });
 export default function App() {
   const Y=useSharedValue(0);
-  const translationY = useSharedValue(0);
+  const gesY=useSharedValue(0);
  
-  const scrollHandler = useAnimatedScrollHandler((event) => {
-    translationY.value = event.contentOffset.y;
+  const gestureHandler = useAnimatedGestureHandler({
+    onStart: (_, ctx) => {
+      ctx.startX = gesY.value;
+    },
+    onActive: (event, ctx) => {
+      gesY.value = ctx.startX + event.translationY;
+    },
+    onEnd: (_) => {
+      gesY.value = withSpring(0);
+    },
   });
   useEffect(()=>{
     Y.value=(!Y.value)
   },[])
   const GraphAnimation=useAnimatedStyle(()=>{
     return{
-      transform:[{
-        translateX:withTiming(interpolate(Y.value,[0,1],[-150,0],Extrapolate.CLAMP),{duration:600})
-      },
+      transform:[
+      //   {
+      //   translateX:withTiming(interpolate(Y.value,[0,1],[-150,0],Extrapolate.CLAMP),{duration:600})
+      // },
       {
-        translateY:interpolate(translationY.value,[0,100],[0,-60],Extrapolate.CLAMP)
+        translateY:interpolate(gesY.value,[0,100],[0,-60],Extrapolate.CLAMP)
       },
     ],
    
@@ -84,23 +98,27 @@ export default function App() {
     return {
       transform: [
         {
-          translateY:interpolate(translationY.value,[0,100],[0,-50],Extrapolate.CLAMP)
+          translateY:gesY.value
+          // withSpring(interpolate(gesY.value,[0,100],[0,-70],Extrapolate.CLAMP))
         },
       ],
+     
     };
   });
+ 
   const ImageTransform = useAnimatedStyle(() => {
     return {
       transform: [
         {
-          translateY:interpolate(translationY.value,[0,100],[0,-50],Extrapolate.CLAMP)
+          translateY:interpolate(gesY.value,[0,100],[0,-50],Extrapolate.CLAMP)
         },
         {
-          scale:interpolate(translationY.value,[0,100],[1,0.7],Extrapolate.CLAMP)
+          scale:interpolate(gesY.value,[0,100],[1,0.7],Extrapolate.CLAMP)
         }
       ],
     };
   });
+
 
   const points = monotoneCubicInterpolation({data, range: 40});
   return (
@@ -120,24 +138,12 @@ export default function App() {
       <ChartDot size={14} style={{ backgroundColor: '#dbb144'}} />
     </ChartPathProvider>
      </Animated.View>
-     <Animated.View style={[styles.ScrollContainer,stylez]}>
-       <Animated.ScrollView
-        onScroll={scrollHandler}
-        scrollEventThrottle={16}
-        showsVerticalScrollIndicator={false}
-        >
-       
-         {
-           item.map((item,index)=>{
-             return(
-                <View key={index} style={{height:100}}>
-                  <Catagory/> 
-                </View>
-             )
-           })
-         }
-       </Animated.ScrollView>
-     </Animated.View>
+        <PanGestureHandler onGestureEvent={gestureHandler}>
+        <Animated.View style={[styles.Catagory,stylez]}>
+        <Catagory translationY={gesY}/>
+        </Animated.View>
+        </PanGestureHandler>
+
       <StatusBar style="auto" />
     </View>
   );
