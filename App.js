@@ -7,6 +7,7 @@ const {width: SIZE} = Dimensions.get('window');
 import {ChartDot, ChartPath, ChartPathProvider, monotoneCubicInterpolation} from '@rainbow-me/animated-charts';
 import Animated, { Extrapolate, interpolate, useAnimatedScrollHandler, useAnimatedStyle, useSharedValue, withSpring, withTiming } from 'react-native-reanimated';
 import { item } from './Component/Data';
+import Catagory from './Component/Catagory';
 const data = [
   {x: 1453075200, y: 1.47}, {x: 1453161600, y: 1.37},
   {x: 1453258000, y: 1.53}, {x: 1453334400, y: 1.54},
@@ -100,13 +101,7 @@ export default function App() {
       ],
     };
   });
-  // const GraphTransform = useAnimatedStyle(() => {
-  //   return {
-  //     transform: [
-       
-  //     ],
-  //   };
-  // });
+
   const points = monotoneCubicInterpolation({data, range: 40});
   return (
     <View style={styles.container}>
@@ -115,7 +110,7 @@ export default function App() {
       <View style={styles.Details}>
         <Text style={styles.Tittle}>Choose Your CV</Text>
         <Animated.Image
-        source={{uri:'https://o.remove.bg/downloads/49b8ef79-a540-4b65-abe5-45864cecf72b/istockphoto-1200677760-170667a-removebg-preview.png'}}
+        source={{uri:'https://o.remove.bg/downloads/0007f3f3-6421-4c17-a97b-9de990fe5ded/istockphoto-1200677760-170667a-removebg-preview.png'}}
         style={[styles.Image,ImageTransform]}
         />
       </View>
@@ -136,9 +131,7 @@ export default function App() {
            item.map((item,index)=>{
              return(
                 <View key={index} style={{height:100}}>
-                    <Text>
-                      hello
-                    </Text>
+                  <Catagory/> 
                 </View>
              )
            })
