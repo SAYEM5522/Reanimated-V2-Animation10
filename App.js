@@ -99,7 +99,6 @@ export default function App() {
       transform: [
         {
           translateY:gesY.value
-          // withSpring(interpolate(gesY.value,[0,100],[0,-70],Extrapolate.CLAMP))
         },
       ],
      
