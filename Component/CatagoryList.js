@@ -16,6 +16,21 @@ const styles = StyleSheet.create({
     backgroundColor:'#fff',
     borderRadius:30,
     marginBottom:20
+  },
+  Name:{
+    fontSize:20,
+    fontWeight:"bold",
+    width:100,
+    left:30,
+    top:20
+  },
+  View:{
+    fontSize:15,
+    fontWeight:"bold",
+    width:100,
+    position:'absolute',
+    bottom:20,
+    alignSelf:'center'
   }
 })
 const CatagoryList = ({item,index}) => {
@@ -23,12 +38,14 @@ const CatagoryList = ({item,index}) => {
     return{
      transform:[{
        translateY:(index%2==0)?-50:0
-     }]
+     }],
+     backgroundColor:(index==0)?"#dbb144":"#fff"
     }
   })
   return (
     <Animated.View  style={[styles.Catagory,AnimatedTop]}>
-        <Text  >hello</Text>
+        <Text style={styles.Name} >{item.name}</Text>
+        <Text style={styles.View}>{item.price}</Text>
     </Animated.View>
   )
 }

@@ -64,9 +64,19 @@ const styles = StyleSheet.create({
   }
 });
 export default function App() {
+  const config={
+    mass:0.1,
+    damping:10,
+    overshootClamping:false,
+    restDisplacementThreshold:5,
+    restSpeedThreshold:0
+  }
   const Y=useSharedValue(0);
   const gesY=useSharedValue(0);
- 
+  function clamp(value, lowerBound, upperBound) {
+    'worklet';
+    return Math.max(lowerBound, Math.min(value, upperBound));
+  }
   const gestureHandler = useAnimatedGestureHandler({
     onStart: (_, ctx) => {
       ctx.startX = gesY.value;
@@ -75,7 +85,7 @@ export default function App() {
       gesY.value = ctx.startX + event.translationY;
     },
     onEnd: (_) => {
-      gesY.value = withSpring(0);
+      gesY.value = withSpring(0,config);
     },
   });
   useEffect(()=>{
@@ -98,7 +108,7 @@ export default function App() {
     return {
       transform: [
         {
-          translateY:gesY.value
+          translateY: clamp(gesY.value,-370,0)
         },
       ],
      
