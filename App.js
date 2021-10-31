@@ -88,7 +88,7 @@ export default function App() {
       //   translateX:withTiming(interpolate(Y.value,[0,1],[-150,0],Extrapolate.CLAMP),{duration:600})
       // },
       {
-        translateY:interpolate(gesY.value,[0,100],[0,-60],Extrapolate.CLAMP)
+        translateY:interpolate(gesY.value,[0,-50],[0,-60],Extrapolate.CLAMP)
       },
     ],
    
@@ -109,10 +109,10 @@ export default function App() {
     return {
       transform: [
         {
-          translateY:interpolate(gesY.value,[0,100],[0,-50],Extrapolate.CLAMP)
+          translateY:interpolate(gesY.value,[0,-50],[0,-50],Extrapolate.CLAMP)
         },
         {
-          scale:interpolate(gesY.value,[0,100],[1,0.7],Extrapolate.CLAMP)
+          scale:interpolate(gesY.value,[0,-50],[1,0.7],Extrapolate.CLAMP)
         }
       ],
     };
@@ -127,7 +127,7 @@ export default function App() {
       <View style={styles.Details}>
         <Text style={styles.Tittle}>Choose Your CV</Text>
         <Animated.Image
-        source={{uri:'https://o.remove.bg/downloads/0007f3f3-6421-4c17-a97b-9de990fe5ded/istockphoto-1200677760-170667a-removebg-preview.png'}}
+        source={{uri:'https://o.remove.bg/downloads/d47e4d81-c1c0-497f-bf7b-32046e185b68/360_F_214746128_31JkeaP6rU0NzzzdFC4khGkmqc8noe6h-removebg-preview.png'}}
         style={[styles.Image,ImageTransform]}
         />
       </View>
