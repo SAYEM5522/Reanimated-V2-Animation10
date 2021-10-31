@@ -61,6 +61,20 @@ const styles = StyleSheet.create({
     padding:15,
     backgroundColor: '#eff5f2',
     height:height
+  },
+  ViewList:{
+    width:80,
+    height:45,
+    position:'absolute',
+    backgroundColor:'rgba(250,250,250,0.9)',
+    left:SIZE-155,
+    top:10,
+    borderRadius:10
+  },
+  Text1:{
+    fontSize:15,
+    fontWeight:'bold',
+    left:10
   }
 });
 export default function App() {
@@ -146,6 +160,10 @@ export default function App() {
       <ChartPath strokeWidth={4} selectedStrokeWidth={4} height={SIZE / 2} selectedOpacity={1} stroke="#dbb144" width={SIZE-100} />
       <ChartDot size={14} style={{ backgroundColor: '#dbb144'}} />
     </ChartPathProvider>
+    <View style={styles.ViewList}>
+     <Text style={styles.Text1}>Today</Text>
+      <Text>144 Views</Text>
+    </View>
      </Animated.View>
         <PanGestureHandler onGestureEvent={gestureHandler}>
         <Animated.View style={[styles.Catagory,stylez]}>
