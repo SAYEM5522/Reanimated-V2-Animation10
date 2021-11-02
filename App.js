@@ -151,7 +151,7 @@ export default function App() {
       <View style={styles.Details}>
         <Text style={styles.Tittle}>Choose Your CV</Text>
         <Animated.Image
-        source={{uri:'https://o.remove.bg/downloads/d47e4d81-c1c0-497f-bf7b-32046e185b68/360_F_214746128_31JkeaP6rU0NzzzdFC4khGkmqc8noe6h-removebg-preview.png'}}
+        source={require('C:\Users\acer\ReanimatedP11\assets\Pic1.png')}
         style={[styles.Image,ImageTransform]}
         />
       </View>
