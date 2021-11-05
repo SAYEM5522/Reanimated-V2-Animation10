@@ -28,6 +28,8 @@ const styles = StyleSheet.create({
     marginBottom:20
   }
 })
+
+
 const Catagory = ({translationY}) => {
   const renderItem=({item,index})=>{
     return(
@@ -36,7 +38,7 @@ const Catagory = ({translationY}) => {
       </View>
     )
   }
-
+ 
   const styleC = useAnimatedStyle(() => {
     return {
       transform: [
